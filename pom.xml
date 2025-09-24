@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example.safway</groupId>
 	<artifactId>safeway-product-application</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>safway</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>

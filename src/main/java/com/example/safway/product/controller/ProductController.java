@@ -25,6 +25,11 @@ public class ProductController {
         this.productService = productService;
     }
 
+    /**
+     *
+     * @param product
+     * @return
+     */
     @PostMapping(ADD_PRODUCT)
     public ProductEntity addProduct(@RequestBody @Valid Product product) {
         return productService.addProductDetails(product);

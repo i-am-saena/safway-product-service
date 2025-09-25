@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -105,5 +106,24 @@ class ProductServiceTest {
 
     }
 
+
+    @Test()
+    @DisplayName("record should fetch with supplied product id")
+    void fetchProductByIdTest(){
+        when(repository.findById(entity.getId())).thenReturn(Optional.of(entity));
+        service.fetchProductById(entity.getId());
+        verify(repository).findById(entity.getId());
+
+    }
+
+    @Test
+    @DisplayName("should through error if no product found with supplied product id")
+    void testProductNotFound(){
+        String productId =entity.getId();
+        when(repository.findById(entity.getId())).thenReturn(Optional.empty());
+        RuntimeException ex = assertThrows(NoSuchElementException.class,
+                () -> service.fetchProductById(productId));
+        assertEquals(" Product not found", ex.getMessage());
+    }
 
 }

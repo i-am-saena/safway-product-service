@@ -110,20 +110,19 @@ class ProductServiceTest {
     @Test()
     @DisplayName("record should fetch with supplied product id")
     void fetchProductByIdTest(){
-          String id="testid";
-        when(repository.findById(id)).thenReturn(Optional.of(entity));
-        service.fetchProductById(id);
-        verify(repository).findById(id);
+        when(repository.findById(entity.getId())).thenReturn(Optional.of(entity));
+        service.fetchProductById(entity.getId());
+        verify(repository).findById(entity.getId());
 
     }
 
     @Test
     @DisplayName("should through error if no product found with supplied product id")
     void testProductNotFound(){
-        String id="testid";
-        when(repository.findById(id)).thenReturn(Optional.empty());
+        String productId =entity.getId();
+        when(repository.findById(entity.getId())).thenReturn(Optional.empty());
         RuntimeException ex = assertThrows(NoSuchElementException.class,
-                () -> service.fetchProductById(id));
+                () -> service.fetchProductById(productId));
         assertEquals(" Product not found", ex.getMessage());
     }
 

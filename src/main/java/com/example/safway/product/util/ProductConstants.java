@@ -15,5 +15,6 @@ public class ProductConstants {
     public static final String ROOT_URL = "/safeway";
     public static final String ADD_PRODUCT = "/addProduct";
     public static final String UPDATE_PRODUCT = "/updateProduct";
+    public  static final String FETCH_PRODUCT = "/getById/{id}";
 
 }

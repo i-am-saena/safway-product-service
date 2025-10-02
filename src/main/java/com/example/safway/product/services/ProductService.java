@@ -68,4 +68,15 @@ public class ProductService {
 
     }
 
+    public Optional<ProductEntity> fetchProductById(String id){
+
+       Optional<ProductEntity> product= repository.findById(id);
+
+       if(product.isEmpty()){
+
+           throw new NoSuchElementException(" Product not found");
+       }
+       return product;
+    }
+
 }

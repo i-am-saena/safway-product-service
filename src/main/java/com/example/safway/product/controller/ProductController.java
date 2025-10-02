@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 import static com.example.safway.product.util.ProductConstants.*;
 import static com.example.safway.product.util.ProductConstants.ROOT_URL;
 
@@ -40,5 +42,10 @@ public class ProductController {
         return productService.updateProductDetails(product);
     }
 
+    @GetMapping(FETCH_PRODUCT)
+    public Optional<ProductEntity> productDetailsGetById(@PathVariable @Valid String id){
+
+        return productService.fetchProductById(id);
+    }
 
 }

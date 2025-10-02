@@ -1,0 +1,44 @@
+{
+  "coupons": [
+    {
+      "couponName": "SAVE10",
+      "couponCategory": "Electronics",
+      "discountedPrice": 90.0
+    },
+    {
+      "couponName": "FASHION20",
+      "couponCategory": "Clothing",
+      "discountedPrice": 80.0
+    },
+    {
+      "couponName": "TRAVEL50",
+      "couponCategory": "Travel",
+      "discountedPrice": 150.0
+    },
+    {
+      "couponName": "BOOKWORM25",
+      "couponCategory": "Books",
+      "discountedPrice": 37.5
+    },
+    {
+      "couponName": "GADGET30",
+      "couponCategory": "Electronics",
+      "discountedPrice": 70.0
+    },
+    {
+      "couponName": "TOYDEAL",
+      "couponCategory": "Toys & Games",
+      "discountedPrice": 40.0
+    },
+    {
+      "couponName": "AUTO15",
+      "couponCategory": "Automotive",
+      "discountedPrice": 85.0
+    },
+    {
+      "couponName": "GROCERY5",
+      "couponCategory": "Groceries",
+      "discountedPrice": 95.0
+    }
+  ]
+}

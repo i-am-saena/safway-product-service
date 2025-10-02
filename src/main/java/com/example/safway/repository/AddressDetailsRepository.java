@@ -1,4 +1,4 @@
-package com.example.safway;
+package com.example.safway.repository;
 
 import com.example.safway.dto.AddressDetails;
 
@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddressDetailsRepository {
+
+     private  AddressDetailsRepository(){}
 
     public static List<AddressDetails> getAllAddresses() {
         List<AddressDetails> addresses = new ArrayList<>();

@@ -1,7 +1,0 @@
-spring:
-  application:
-     name: safway
-  data:
-    mongodb:
-      database: safway
-      uri: mongodb+srv://dsaha0271:8637214318@dipakmongocliuster.3jprv.mongodb.net/?retryWrites=true&w=majority&appName=DIPAKMONGOCLIUSTER

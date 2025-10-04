@@ -1,10 +1,12 @@
 package com.example.safway;
 
 import com.example.safway.dto.AddressDetails;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class AddressDetailsRepository {
 
     public static List<AddressDetails> getAllAddresses() {

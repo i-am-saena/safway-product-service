@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class AddressDetailsServiceImpl implements AddressService{
 
 
+    @Autowired
     BlacklistAddress blacklistAddress;
     @SneakyThrows
     public List<AddressDetailsResponse> getAddressDetails(String postalCode,Boolean isBlackListed){

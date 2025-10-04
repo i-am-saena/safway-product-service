@@ -19,66 +19,43 @@ import java.util.stream.Collectors;
 
 @Service
 public class CartService {
-     private  final ProductRepository repository;
+    private final ProductRepository repository;
 
     @Autowired
-    public CartService(ProductRepository repository){
-        this.repository=repository;
+    public CartService(ProductRepository repository) {
+        this.repository = repository;
     }
 
     @Autowired
     CuponServiceCaller serviceCaller;
 
-    public CartReponce calculatecartItem(CartDetails cartDetails){
-        int validItemCount = 0;
-        int invalidItemCount = 0;
-        double totalPrice=0;
-        double finalPrice=0;
-        double discountAmount=0;
-        int quantity =0;
-        List<Double> cuponPrice =new ArrayList<>();;
-        List<Cupon> cuponDetails;
-        List<Integer> errorList=new ArrayList<>();
-        List<Integer> validList=new ArrayList<>();
+    public CartReponce calculatecartItem(CartDetails cartDetails) {
 
+        double totalPrice ;
+        double finalPrice ;
+        double discountAmount = 0;
+        List<Integer> errorList;
+        List<Integer> validList = new ArrayList<>();
         CartReponce responce = new CartReponce();
 
-        if(cartDetails.getCoupon().isBlank()){
-            responce.setIsCouponApplied(false);
-        }else{
-            responce.setIsCouponApplied(true);
-             cuponDetails= serviceCaller.getCuponByCuponName(cartDetails.getCoupon());
-             cuponPrice=cuponDetails.stream().map(m->m.getDiscountedPrice()).toList();
-            discountAmount=cuponPrice.get(0);
-        }
 
-       Integer totalItemCount= cartDetails.getItems().entrySet().stream().map(Map.Entry::getValue).reduce((a, b)->a+b).get();
-        List<Integer> listOfItemId = cartDetails.getItems().entrySet().stream().map(Map.Entry::getKey).map(m->m.intValue()).toList();
+        Integer totalItemCount = cartDetails.getItems().entrySet().stream().map(Map.Entry::getValue).reduce(Integer::sum).orElse(0);
+        List<Integer> listOfItemId = cartDetails.getItems().entrySet().stream().map(Map.Entry::getKey).map(Long::intValue).toList();
+
+        List<ProductEntity> allById = repository.findAllById(listOfItemId);
+
+        List<Integer> validProductIds = allById.stream().map(ProductEntity::getId).toList();
+        errorList =  new ArrayList<>(listOfItemId);
+        errorList.removeAll(validProductIds);
+
+        totalPrice = allById.stream().map(ProductEntity::getPrice).reduce(Double::sum).orElse(0.0);
+        discountAmount = getDiscountAmount(cartDetails, responce, discountAmount);
+        finalPrice = totalPrice - discountAmount;
+
+
         responce.setItemCount(totalItemCount);
-
-        for(Integer itemId:listOfItemId){
-
-            Optional<ProductEntity> product=repository.findById(itemId);
-
-            if(product.isEmpty()){
-                   invalidItemCount =invalidItemCount+1;
-                   errorList.add(itemId);
-            }else{
-                validItemCount =validItemCount+1;
-                validList.add(itemId);
-               quantity= cartDetails.getItems().get(itemId.longValue());
-               totalPrice += quantity * product.get().getPrice();
-            }
-        }
-
-
-        finalPrice=    totalPrice- discountAmount ;
-
-
-
-
-        responce.setInvalidItemCount(invalidItemCount);
-        responce.setValidItemCount(validItemCount);
+        responce.setInvalidItemCount(errorList.size());
+        responce.setValidItemCount(validProductIds.size());
         responce.setErrorItemIdList(errorList);
         responce.setProcessedItemList(validList);
         responce.setTotalPrice(totalPrice);
@@ -86,6 +63,18 @@ public class CartService {
         responce.setFinalPrice(finalPrice);
 
         return responce;
+    }
+
+    private double getDiscountAmount(CartDetails cartDetails, CartReponce responce, double discountAmount) {
+        List<Cupon> cuponDetails;
+        if (cartDetails.getCoupon().isBlank()) {
+            responce.setIsCouponApplied(false);
+        } else {
+            responce.setIsCouponApplied(true);
+            cuponDetails = serviceCaller.getCuponByCuponName(cartDetails.getCoupon());
+            discountAmount = cuponDetails.get(0).getDiscountedPrice();
+        }
+        return discountAmount;
     }
 
 }

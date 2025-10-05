@@ -22,7 +22,7 @@ public class AddressDetailsServiceImpl implements AddressService{
     public List<AddressDetailsResponse> getAddressDetails(String postalCode,Boolean isBlackListed){
        // List<AddressDetailsResponse> finalAddressDetailsResponses = new ArrayList<>();
         List<AddressDetails> allAddresses = AddressDetailsRepository.getAllAddresses();
-        blacklistAddress = new BlacklistAddress();
+        //blacklistAddress = new BlacklistAddress();
        // List<Zone> Zone = blacklistAddress.getAll();
         List<AddressDetailsResponse> allAddr = allAddresses.stream().map(addr -> new AddressDetailsResponse(addr.getPostalCode(),
                 addr.getStreet(), addr.getStreet(), false)).toList();
@@ -30,10 +30,12 @@ public class AddressDetailsServiceImpl implements AddressService{
             List<AddressDetailsResponse> blackListed = blacklistAddress.getAll().stream().map(addr -> new AddressDetailsResponse(
                     addr.getPostalCode(), null, null, true)).toList();
             allAddr.addAll(blackListed);
+        }else{
+            List<String> collect = blacklistAddress.getAll().stream().map(Zone::getPostalCode).toList();
+            allAddr = allAddr.stream().filter(addr -> !collect.contains(addr.getPostalCode())).collect(Collectors.toList());
         }
         if(postalCode != null && !postalCode.isEmpty()){
             allAddr.stream().filter(addr -> addr.getPostalCode().equals(postalCode)).toList();
-
         }
 
         return allAddr;
